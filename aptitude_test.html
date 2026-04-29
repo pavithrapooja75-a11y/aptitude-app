@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Campus Placement Aptitude Test</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:15px;color:#1a1a1a;background:#f5f4f0;min-height:100vh}
+a{color:inherit}
+input,select,textarea{width:100%;padding:9px 13px;border:1px solid #d1cfc7;border-radius:8px;font-size:14px;background:#fff;color:#1a1a1a;font-family:inherit}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#534AB7;box-shadow:0 0 0 3px rgba(83,74,183,0.12)}
+textarea{resize:vertical;min-height:72px;line-height:1.5}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:9px 18px;border-radius:8px;border:1px solid #d1cfca;background:#fff;cursor:pointer;font-size:13px;font-weight:500;color:#1a1a1a;transition:background .12s;font-family:inherit}
+.btn:hover{background:#f0eeea}
+.btn-primary{background:#534AB7;color:#fff;border-color:#534AB7}.btn-primary:hover{background:#3C3489}
+.btn-success{background:#3B6D11;color:#fff;border-color:#3B6D11}.btn-success:hover{background:#27500A}
+.btn-danger{background:#A32D2D;color:#fff;border-color:#A32D2D}.btn-danger:hover{background:#791F1F}
+.btn-sm{padding:5px 11px;font-size:12px}
+.card{background:#fff;border:1px solid #e8e6e0;border-radius:12px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.label{font-size:12px;color:#6b6b68;display:block;margin-bottom:4px;margin-top:10px}
+.label:first-child{margin-top:0}
+.error-msg{font-size:12px;color:#A32D2D;margin-top:5px}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:10px 1.25rem;border-bottom:1px solid #e8e6e0;margin-bottom:1rem;background:#fff;position:sticky;top:0;z-index:10}
+.nav-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:1.25rem}
+.nav-tab{padding:7px 13px;border-radius:8px;border:1px solid #e8e6e0;cursor:pointer;font-size:12px;font-weight:500;background:#fff;color:#6b6b68;transition:all .12s}
+.nav-tab:hover{background:#f0eeea}
+.nav-tab.active{background:#534AB7;color:#fff;border-color:#534AB7}
+.sec-tab{padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:500;border:1px solid #e8e6e0;background:#fff;color:#6b6b68;transition:all .12s}
+.sec-tab:hover{background:#f0eeea}
+.sec-tab.done{border-color:#3B6D11;color:#3B6D11;background:#EAF3DE}
+.sec-tab.active-sec{border-color:#534AB7;background:#534AB7;color:#fff}
+.opt-row{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid #e8e6e0;border-radius:8px;cursor:pointer;margin-bottom:7px;transition:background .1s}
+.opt-row:hover{background:#f5f4f0}
+.opt-row.selected{border-color:#534AB7;background:#EEEDFE}
+.progress-bar{height:5px;background:#e8e6e0;border-radius:3px;overflow:hidden;margin-bottom:.75rem}
+.progress-fill{height:100%;border-radius:3px;transition:width .3s}
+.timer-box{display:flex;flex-direction:column;align-items:center;padding:6px 14px;border-radius:8px;border:1px solid #e8e6e0;background:#f5f4f0;min-width:78px}
+.timer-val{font-size:20px;font-weight:500;color:#534AB7;font-variant-numeric:tabular-nums}
+.timer-val.warn{color:#A32D2D}
+.timer-lbl{font-size:11px;color:#6b6b68}
+.stat{background:#f5f4f0;border-radius:8px;padding:.875rem 1rem;text-align:center}
+.stat-n{font-size:22px;font-weight:500}
+.stat-l{font-size:11px;color:#6b6b68;margin-top:2px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin-bottom:1rem}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:7px 10px;border-bottom:1px solid #e8e6e0;color:#6b6b68;font-weight:500;font-size:12px}
+td{padding:7px 10px;border-bottom:1px solid #f0eeea;vertical-align:middle}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500}
+.badge-pass{background:#EAF3DE;color:#27500A}
+.badge-fail{background:#FCEBEB;color:#791F1F}
+.badge-pending{background:#F1EFE8;color:#5F5E5A}
+.tag{display:inline-block;font-size:11px;padding:2px 9px;border-radius:10px;font-weight:500}
+.tag-Q{background:#EEEDFE;color:#3C3489}
+.tag-L{background:#E1F5EE;color:#085041}
+.tag-V{background:#FAEEDA;color:#633806}
+.sec-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding:10px 14px;border-radius:8px;border:1px solid}
+.empty{text-align:center;padding:2rem 1rem;color:#6b6b68;font-size:13px}
+.section-title{font-size:14px;font-weight:500;margin-bottom:.875rem;color:#1a1a1a}
+.wrap{max-width:860px;margin:0 auto;padding:1rem}
+.info-box{background:#f0eeea;border:1px solid #d1cfca;border-radius:8px;padding:12px 16px;font-size:13px;color:#5F5E5A;line-height:1.8}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const SECTIONS=['Quantitative','Logical','Verbal'];
+const SCOL={Quantitative:'#534AB7',Logical:'#0F6E56',Verbal:'#BA7517'};
+const SBG={Quantitative:'#EEEDFE',Logical:'#E1F5EE',Verbal:'#FAEEDA'};
+const SBDR={Quantitative:'#AFA9EC',Logical:'#5DCAA5',Verbal:'#EF9F27'};
+const SKEY={Quantitative:'Q',Logical:'L',Verbal:'V'};
+
+const lsg=k=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):null}catch(e){return null}};
+const lss=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+
+const DB={
+  get students(){return lsg('apt_students')||{}},set students(v){lss('apt_students',v)},
+  get questions(){return lsg('apt_questions')||{Quantitative:[],Logical:[],Verbal:[]}},set questions(v){lss('apt_questions',v)},
+  get submissions(){return lsg('apt_submissions')||{}},set submissions(v){lss('apt_submissions',v)},
+  get settings(){return lsg('apt_settings')||{sections:{Quantitative:{duration:600,cutoff:5},Logical:{duration:600,cutoff:5},Verbal:{duration:600,cutoff:5}},totalCutoff:15}},
+  set settings(v){lss('apt_settings',v)}
+};
+
+let S={
+  view:'landing',regInput:'',student:null,
+  curSection:0,sectionDone:[false,false,false],
+  answers:{Quantitative:{},Logical:{},Verbal:{}},
+  timers:[null,null,null],timeLeft:[0,0,0],
+  sectionScores:[null,null,null],
+  adminLoggedIn:false,adminPass:'admin@123',adminPassInput:'',
+  adminTab:'dashboard',adminSecTab:'Quantitative',
+  showAddQ:false,showAddS:false,
+  newQ:{type:'Quantitative',q:'',opts:['','','',''],ans:0},
+  editingQId:null,bulk:''
+};
+
+function fmt(sec){const m=Math.floor(sec/60),s=sec%60;return`${m}:${s.toString().padStart(2,'0')}`}
+function pct(s,t){return t?Math.round(s/t*100):0}
+
+function startSection(idx){
+  const sec=SECTIONS[idx];
+  const dur=DB.settings.sections[sec].duration;
+  S.curSection=idx;S.timeLeft[idx]=dur;
+  if(S.timers[idx])clearInterval(S.timers[idx]);
+  S.timers[idx]=setInterval(()=>{
+    S.timeLeft[idx]--;
+    if(S.timeLeft[idx]<=0){clearInterval(S.timers[idx]);finishSection(idx);}
+    else{
+      const el=document.getElementById('timerVal'+idx);
+      if(el){el.textContent=fmt(S.timeLeft[idx]);el.className='timer-val'+(S.timeLeft[idx]<=60?' warn':'');}
+    }
+  },1000);
+  render();
+}
+
+function finishSection(idx){
+  if(S.timers[idx])clearInterval(S.timers[idx]);
+  const sec=SECTIONS[idx];
+  const qs=DB.questions[sec]||[];
+  let score=0;
+  qs.forEach(q=>{if(S.answers[sec][q.id]===q.ans)score++;});
+  S.sectionScores[idx]=score;S.sectionDone[idx]=true;
+  if(idx<SECTIONS.length-1){S.curSection=idx+1;render();}
+  else submitAll();
+}
+
+function submitAll(){
+  SECTIONS.forEach((_,i)=>{if(S.timers[i])clearInterval(S.timers[i]);});
+  const qs=DB.questions,set=DB.settings;
+  let total=0,totalQ=0;const secResults={};
+  SECTIONS.forEach((sec,i)=>{
+    const score=S.sectionScores[i]||0;
+    const secQs=(qs[sec]||[]).length;
+    const cutoff=set.sections[sec].cutoff;
+    secResults[sec]={score,total:secQs,cutoff,pass:score>=cutoff};
+    total+=score;totalQ+=secQs;
+  });
+  const subs=DB.submissions;
+  subs[S.student.reg]={name:S.student.name,total,totalQ,pass:total>=set.totalCutoff,secResults,time:new Date().toLocaleString()};
+  DB.submissions=subs;S.view='result';render();
+}
+
+function render(){
+  const app=document.getElementById('app');
+  const map={landing:rLanding,test:rTest,result:rResult,admin:rAdmin};
+  app.innerHTML=(map[S.view]||rLanding)();
+  attachEvents();
+}
+
+function rLanding(){
+  const set=DB.settings,qs=DB.questions;
+  const totalQ=SECTIONS.reduce((a,s)=>a+(qs[s]||[]).length,0);
+  const totalT=SECTIONS.reduce((a,s)=>a+set.sections[s].duration,0);
+  return`<div class="wrap" style="max-width:460px">
+  <div style="text-align:center;margin:2rem 0 1.75rem">
+    <div style="width:52px;height:52px;background:#EEEDFE;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px">&#127891;</div>
+    <h1 style="font-size:19px;font-weight:600;color:#1a1a1a">Campus Placement Aptitude Test</h1>
+    <p style="color:#6b6b68;font-size:13px;margin-top:5px">${totalQ} Questions &nbsp;·&nbsp; ${Math.round(totalT/60)} min total &nbsp;·&nbsp; Cutoff: ${set.totalCutoff}</p>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:1.25rem;justify-content:center;flex-wrap:wrap">
+    ${SECTIONS.map(sec=>{const s=set.sections[sec],n=(qs[sec]||[]).length;
+      return`<div style="text-align:center;padding:10px 16px;border:1px solid #e8e6e0;border-top:3px solid ${SCOL[sec]};border-radius:8px;background:#fff;min-width:120px">
+        <div style="font-size:11px;font-weight:600;color:${SCOL[sec]};margin-bottom:4px">${sec.toUpperCase()}</div>
+        <div style="font-size:15px;font-weight:500">${n}Q &nbsp;·&nbsp; ${s.duration/60}m</div>
+        <div style="font-size:11px;color:#6b6b68;margin-top:2px">Cutoff: ${s.cutoff}</div>
+      </div>`;}).join('')}
+  </div>
+  <div class="card">
+    <label class="label">Registration Number</label>
+    <input id="regInput" type="text" placeholder="e.g. 21CS001" value="${S.regInput}" style="text-transform:uppercase;font-size:16px;letter-spacing:.5px"/>
+    <div id="regErr" class="error-msg" style="display:none"></div>
+    <button class="btn btn-primary" id="loginBtn" style="width:100%;margin-top:12px;padding:12px;font-size:14px;justify-content:center">Enter Test &rarr;</button>
+  </div>
+  <div class="info-box">
+    <strong style="color:#1a1a1a;font-weight:600">Instructions</strong><br/>
+    &bull; Only registered students can attempt &nbsp;&bull; Each reg number can be used only once<br/>
+    &bull; 3 sections — each with its own timer &nbsp;&bull; Complete each section before moving to the next<br/>
+    &bull; Section auto-submits when timer expires &nbsp;&bull; No negative marking
+  </div>
+  <div style="text-align:center;margin-top:1rem">
+    <button class="btn" id="adminBtn" style="font-size:12px;padding:5px 14px;color:#6b6b68">&#9881; Admin Panel</button>
+  </div>
+</div>`;}
+
+function rTest(){
+  const idx=S.curSection,sec=SECTIONS[idx];
+  const qs=DB.questions[sec]||[];
+  if(!qs.length)return`<div class="wrap"><div class="empty">No questions in ${sec} section. Contact admin.</div></div>`;
+  const answers=S.answers[sec];
+  const answered=Object.keys(answers).length;
+  const tl=S.timeLeft[idx];
+  const set=DB.settings.sections[sec];
+  return`<div>
+  <div class="topbar">
+    <div><div style="font-weight:600;font-size:14px">${S.student.name}</div><div style="font-size:11px;color:#6b6b68">${S.student.reg}</div></div>
+    <div style="display:flex;gap:6px;align-items:center">
+      ${SECTIONS.map((s,i)=>`<div class="sec-tab${i===idx?' active-sec':S.sectionDone[i]?' done':''}" style="font-size:12px;padding:5px 10px">${s.slice(0,4)}</div>`).join('')}
+    </div>
+    <div class="timer-box">
+      <div id="timerVal${idx}" class="timer-val${tl<=60?' warn':''}">${fmt(tl)}</div>
+      <div class="timer-lbl">${sec}</div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div style="display:flex;justify-content:space-between;margin-bottom:.5rem">
+      <span style="font-size:13px;color:#6b6b68">${answered}/${qs.length} answered</span>
+      <span style="font-size:12px;color:#6b6b68">Section cutoff: ${set.cutoff}</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct(answered,qs.length)}%;background:${SCOL[sec]}"></div></div>
+    <div class="sec-header" style="border-color:${SBDR[sec]};background:${SBG[sec]}">
+      <span style="font-size:14px;font-weight:600;color:${SCOL[sec]}">${sec} Aptitude</span>
+      <span style="font-size:12px;color:${SCOL[sec]};opacity:.8">${qs.length} questions &nbsp;·&nbsp; ${set.duration/60} minutes</span>
+    </div>
+    ${qs.map((q,i)=>{const sel=answers[q.id];return`<div class="card">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:12px;color:#6b6b68">Q${i+1} / ${qs.length}</span>
+        <span class="tag tag-${SKEY[sec]}">${sec}</span>
+      </div>
+      <p style="font-size:14px;line-height:1.7;margin-bottom:12px">${q.q}</p>
+      ${q.opts.map((o,j)=>`<div class="opt-row${sel===j?' selected':''}" data-qid="${q.id}" data-idx="${j}" data-sec="${sec}">
+        <input type="radio" name="q${q.id}" ${sel===j?'checked':''} style="width:15px;height:15px;flex-shrink:0;cursor:pointer" readonly/>${o}
+      </div>`).join('')}
+    </div>`;}).join('')}
+    <div style="text-align:center;margin:1.5rem 0">
+      <button class="btn btn-primary" id="finishSecBtn" style="padding:12px 40px;font-size:14px">
+        ${idx<SECTIONS.length-1?'Finish Section &amp; Continue &rarr;':'Submit Test'}
+      </button>
+    </div>
+  </div></div>`;}
+
+function rResult(){
+  const sub=DB.submissions[S.student?.reg];
+  if(!sub)return`<div class="empty">Error loading results.</div>`;
+  const pass=sub.pass;
+  return`<div class="wrap" style="max-width:540px">
+  <div class="card" style="text-align:center;margin-top:1.5rem">
+    <div style="font-size:48px;font-weight:700;color:${pass?'#3B6D11':'#A32D2D'}">${sub.total}/${sub.totalQ}</div>
+    <div style="font-size:13px;color:#6b6b68;margin-top:2px">${pct(sub.total,sub.totalQ)}% overall score</div>
+    <div style="margin:1rem 0;padding:12px 16px;border-radius:8px;background:${pass?'#EAF3DE':'#FCEBEB'};color:${pass?'#27500A':'#791F1F'};font-size:14px;font-weight:500">
+      ${pass?'&#127881; Congratulations! You have qualified the aptitude round.':'You did not meet the cutoff of '+DB.settings.totalCutoff+'. Better luck next time.'}
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1rem">
+    ${SECTIONS.map(sec=>{const r=sub.secResults[sec];
+      return`<div style="padding:14px;border:1px solid ${r.pass?'#3B6D11':'#e8e6e0'};border-top:3px solid ${SCOL[sec]};border-radius:8px;background:${r.pass?'#EAF3DE':'#fff'};text-align:center">
+        <div style="font-size:11px;font-weight:600;color:${SCOL[sec]};margin-bottom:6px">${sec.toUpperCase()}</div>
+        <div style="font-size:22px;font-weight:600;color:${r.pass?'#3B6D11':'#A32D2D'}">${r.score}/${r.total}</div>
+        <div style="font-size:11px;color:#6b6b68">Cutoff: ${r.cutoff}</div>
+        <div style="font-size:11px;margin-top:4px;font-weight:500;color:${r.pass?'#3B6D11':'#A32D2D'}">${r.pass?'&#10003; Cleared':'&#10007; Not cleared'}</div>
+      </div>`;}).join('')}
+  </div>
+  <div class="card">
+    <div class="section-title">Detailed Review</div>
+    ${SECTIONS.map((sec,si)=>{
+      const secQs=DB.questions[sec]||[];
+      const secAns=S.answers[sec];
+      return`<div style="margin-bottom:1.25rem">
+        <div style="font-weight:600;font-size:13px;color:${SCOL[sec]};margin-bottom:.5rem;padding-bottom:6px;border-bottom:1px solid #e8e6e0">${sec} &mdash; ${S.sectionScores[si]||0}/${secQs.length}</div>
+        ${secQs.map((q,i)=>{const ua=secAns[q.id],correct=ua===q.ans,skip=ua===undefined;
+          return`<div style="margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid #f5f4f0">
+            <div style="display:flex;gap:6px">
+              <span style="font-size:12px;color:#6b6b68;flex-shrink:0;margin-top:1px">Q${i+1}</span>
+              <div><div style="font-size:13px;margin-bottom:2px">${q.q}</div>
+                ${skip?`<div style="font-size:12px;color:#888">Skipped &middot; Correct: <strong>${q.opts[q.ans]}</strong></div>`:
+                correct?`<div style="font-size:12px;color:#3B6D11">&#10003; ${q.opts[ua]}</div>`:
+                `<div style="font-size:12px;color:#A32D2D">&#10007; Yours: ${q.opts[ua]} &middot; Correct: <strong>${q.opts[q.ans]}</strong></div>`}
+              </div>
+            </div>
+          </div>`;}).join('')}
+      </div>`;}).join('')}
+  </div></div>`;}
+
+function rAdmin(){
+  if(!S.adminLoggedIn)return`<div class="wrap" style="max-width:360px;padding-top:3rem">
+    <div class="card">
+      <div style="font-weight:600;font-size:15px;margin-bottom:1rem">&#9881; Admin Login</div>
+      <label class="label">Password</label>
+      <input id="apass" type="password" placeholder="Enter admin password" value="${S.adminPassInput}"/>
+      <div id="aErr" class="error-msg" style="display:none">Incorrect password</div>
+      <button class="btn btn-primary" id="adminLoginBtn" style="width:100%;margin-top:12px;justify-content:center">Login</button>
+      <p style="font-size:12px;color:#888;margin-top:10px;text-align:center">Default: admin@123</p>
+    </div></div>`;
+
+  const tab=S.adminTab,subList=Object.entries(DB.submissions),stList=Object.entries(DB.students),qs=DB.questions;
+  return`<div>
+  <div class="topbar">
+    <div style="font-weight:600;font-size:14px">&#9881; Admin Panel</div>
+    <div style="display:flex;gap:6px;align-items:center">
+      <button class="btn" id="backHomeBtn" style="font-size:12px;padding:5px 10px">&#8592; Home</button>
+      <button class="btn btn-danger btn-sm" id="adminLogoutBtn">Logout</button>
+    </div>
+  </div>
+  <div class="wrap">
+  <div class="nav-tabs">
+    ${['dashboard','students','questions','results','settings'].map(t=>
+      `<div class="nav-tab${tab===t?' active':''}" data-tab="${t}">${t.charAt(0).toUpperCase()+t.slice(1)}</div>`).join('')}
+  </div>
+  ${tab==='dashboard'?rDash(subList,stList,qs):
+    tab==='students'?rStudents(stList):
+    tab==='questions'?rQuestions(qs):
+    tab==='results'?rResults(subList):
+    rSettings()}
+  </div></div>`;}
+
+function rDash(subList,stList,qs){
+  const passed=subList.filter(([,s])=>s.pass).length;
+  const totalQ=SECTIONS.reduce((a,s)=>a+(qs[s]||[]).length,0);
+  const avg=subList.length?Math.round(subList.reduce((a,[,s])=>a+s.total,0)/subList.length):0;
+  return`<div class="grid3">
+    <div class="stat"><div class="stat-n">${stList.length}</div><div class="stat-l">Registered</div></div>
+    <div class="stat"><div class="stat-n">${subList.length}</div><div class="stat-l">Attempted</div></div>
+    <div class="stat"><div class="stat-n">${passed}</div><div class="stat-l">Qualified</div></div>
+    <div class="stat"><div class="stat-n">${totalQ}</div><div class="stat-l">Questions</div></div>
+    <div class="stat"><div class="stat-n">${avg}</div><div class="stat-l">Avg Score</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1rem">
+    ${SECTIONS.map(sec=>{const n=(qs[sec]||[]).length,set=DB.settings.sections[sec];
+      return`<div style="padding:12px;border:1px solid #e8e6e0;border-top:3px solid ${SCOL[sec]};border-radius:8px;background:#fff">
+        <div style="font-size:11px;font-weight:600;color:${SCOL[sec]};margin-bottom:4px">${sec.toUpperCase()}</div>
+        <div style="font-size:18px;font-weight:500">${n} Questions</div>
+        <div style="font-size:11px;color:#6b6b68">${set.duration/60}min &middot; Cutoff ${set.cutoff}</div>
+      </div>`;}).join('')}
+  </div>
+  <div class="card">
+    <div class="section-title">Recent Submissions</div>
+    ${subList.length===0?`<div class="empty">No submissions yet.</div>`:
+    `<table><thead><tr><th>Name</th><th>Reg No</th><th>Score</th><th>Status</th></tr></thead><tbody>
+    ${subList.slice(-10).reverse().map(([r,s])=>`<tr>
+      <td>${s.name}</td><td style="font-family:monospace;font-size:12px">${r}</td>
+      <td>${s.total}/${s.totalQ}</td>
+      <td><span class="badge ${s.pass?'badge-pass':'badge-fail'}">${s.pass?'Qualified':'Not Qualified'}</span></td>
+    </tr>`).join('')}</tbody></table>`}
+  </div>`;}
+
+function rStudents(stList){
+  return`<div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <div class="section-title" style="margin:0">Students (${stList.length})</div>
+      <button class="btn btn-primary btn-sm" id="addSToggle">+ Add Students</button>
+    </div>
+    ${S.showAddS?`<div style="padding:1rem;background:#f5f4f0;border-radius:8px;margin-bottom:1rem">
+      <div class="section-title">Single Student</div>
+      <div class="grid2">
+        <div><label class="label">Reg Number</label><input id="newReg" type="text" placeholder="21CS006" style="text-transform:uppercase"/></div>
+        <div><label class="label">Full Name</label><input id="newName" type="text" placeholder="Student Name"/></div>
+      </div>
+      <div style="margin-top:10px">
+        <label class="label">Bulk Add — one per line: <code style="background:#e8e6e0;padding:1px 5px;border-radius:3px">REGNUMBER,NAME</code></label>
+        <textarea id="bulkInput" placeholder="21CS007,Arun Kumar&#10;21EC003,Divya Rajan&#10;21ME002,Ravi Kumar">${S.bulk}</textarea>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn btn-success btn-sm" id="saveSBtn">Save</button>
+        <button class="btn btn-sm" id="cancelSBtn">Cancel</button>
+      </div>
+    </div>`:''}
+    ${stList.length===0?`<div class="empty">No students registered yet.</div>`:
+    `<div style="max-height:400px;overflow-y:auto">
+    <table><thead><tr><th>Reg No</th><th>Name</th><th>Status</th><th></th></tr></thead><tbody>
+    ${stList.map(([r,n])=>`<tr>
+      <td style="font-family:monospace;font-size:12px">${r}</td><td>${n}</td>
+      <td>${DB.submissions[r]?`<span class="badge badge-pass">Attempted</span>`:`<span class="badge badge-pending">Pending</span>`}</td>
+      <td><button class="btn btn-danger btn-sm" data-delreg="${r}">Remove</button></td>
+    </tr>`).join('')}</tbody></table></div>`}
+  </div>`;}
+
+function rQuestions(qs){
+  const sec=S.adminSecTab,secQs=qs[sec]||[];
+  return`<div class="card">
+    <div style="display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap">
+      ${SECTIONS.map(s=>`<div class="sec-tab${s===sec?' active-sec':''}" data-asec="${s}" style="font-size:13px">
+        ${s} <span style="font-size:11px;opacity:.7">(${(qs[s]||[]).length})</span>
+      </div>`).join('')}
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <div style="font-size:13px;color:#6b6b68">${secQs.length} questions in ${sec}</div>
+      <button class="btn btn-primary btn-sm" id="addQToggle">+ Add Question</button>
+    </div>
+    ${S.showAddQ?`<div style="padding:1rem;background:#f5f4f0;border-radius:8px;margin-bottom:1rem">
+      <div class="section-title">${S.editingQId?'Edit Question':'New '+sec+' Question'}</div>
+      <label class="label">Question Text</label>
+      <textarea id="nqText" placeholder="Type the full question here...">${S.newQ.q}</textarea>
+      <label class="label" style="margin-top:10px">Options — select the radio button next to the correct answer</label>
+      ${[0,1,2,3].map(i=>`<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">
+        <input type="radio" name="nqAns" value="${i}" ${S.newQ.ans===i?'checked':''} style="width:15px;height:15px;flex-shrink:0;cursor:pointer"/>
+        <input id="nqOpt${i}" type="text" placeholder="Option ${i+1}" value="${S.newQ.opts[i]}" style="flex:1"/>
+      </div>`).join('')}
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-success btn-sm" id="saveQBtn">${S.editingQId?'Update Question':'Save Question'}</button>
+        <button class="btn btn-sm" id="cancelQBtn">Cancel</button>
+      </div>
+    </div>`:''}
+    ${secQs.length===0?`<div class="empty" style="padding:1.5rem">No ${sec} questions yet.<br/><span style="font-size:12px">Click "+ Add Question" above to get started.</span></div>`:
+    secQs.map((q,i)=>`<div style="padding:12px 14px;border:1px solid #e8e6e0;border-radius:8px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+        <div style="flex:1">
+          <div style="font-size:12px;color:#6b6b68;margin-bottom:4px">Q${i+1}</div>
+          <div style="font-size:13px;line-height:1.6;margin-bottom:5px">${q.q}</div>
+          <div style="font-size:12px;color:#6b6b68;display:flex;flex-wrap:wrap;gap:8px">
+            ${q.opts.map((o,j)=>`<span style="${j===q.ans?'color:#3B6D11;font-weight:600':''}">${j===q.ans?'&#10003; ':''} ${o}</span>`).join('')}
+          </div>
+        </div>
+        <div style="display:flex;gap:5px;flex-shrink:0">
+          <button class="btn btn-sm" data-editq="${q.id}" data-qsec="${sec}">Edit</button>
+          <button class="btn btn-danger btn-sm" data-delq="${q.id}" data-qsec="${sec}">Remove</button>
+        </div>
+      </div>
+    </div>`).join('')}
+  </div>`;}
+
+function rResults(subList){
+  const sorted=[...subList].sort(([,a],[,b])=>b.total-a.total);
+  // CSV export helper
+  return`<div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <div class="section-title" style="margin:0">Results (${sorted.length})</div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-sm" id="exportCsvBtn">&#11015; Export CSV</button>
+        <button class="btn btn-sm" id="clearResultsBtn" style="color:#A32D2D;border-color:#A32D2D">Clear All</button>
+      </div>
+    </div>
+    ${sorted.length===0?`<div class="empty">No results yet.</div>`:
+    `<div style="overflow-x:auto"><table><thead><tr><th>#</th><th>Name</th><th>Reg No</th><th>Total</th>
+    ${SECTIONS.map(s=>`<th>${s.slice(0,4)}</th>`).join('')}<th>Date</th><th>Status</th></tr></thead><tbody>
+    ${sorted.map(([r,s],i)=>`<tr>
+      <td style="color:#6b6b68">${i+1}</td>
+      <td>${s.name}</td>
+      <td style="font-family:monospace;font-size:12px">${r}</td>
+      <td><strong>${s.total}/${s.totalQ}</strong> &nbsp;<span style="font-size:11px;color:#6b6b68">${pct(s.total,s.totalQ)}%</span></td>
+      ${SECTIONS.map(sec=>{const sr=s.secResults?.[sec];return`<td style="color:${sr?.pass?'#3B6D11':'#A32D2D'}">${sr?sr.score+'/'+sr.total:'—'}</td>`}).join('')}
+      <td style="font-size:11px;color:#6b6b68">${s.time}</td>
+      <td><span class="badge ${s.pass?'badge-pass':'badge-fail'}">${s.pass?'Qualified':'Not Qualified'}</span></td>
+    </tr>`).join('')}</tbody></table></div>`}
+  </div>`;}
+
+function rSettings(){
+  const set=DB.settings;
+  return`<div class="card">
+    <div class="section-title">Section-wise Settings</div>
+    ${SECTIONS.map(sec=>{const s=set.sections[sec];return`
+    <div style="padding:12px;border:1px solid #e8e6e0;border-left:4px solid ${SCOL[sec]};border-radius:8px;margin-bottom:10px">
+      <div style="font-size:13px;font-weight:600;color:${SCOL[sec]};margin-bottom:8px">${sec}</div>
+      <div class="grid2">
+        <div><label class="label">Duration (minutes)</label><input class="sec-dur" data-sec="${sec}" type="number" min="1" max="180" value="${s.duration/60}"/></div>
+        <div><label class="label">Cutoff (marks)</label><input class="sec-cut" data-sec="${sec}" type="number" min="0" value="${s.cutoff}"/></div>
+      </div>
+    </div>`;}).join('')}
+    <div style="margin-top:10px;max-width:260px">
+      <label class="label">Overall Qualifying Cutoff (total marks)</label>
+      <input id="totalCutoff" type="number" min="0" value="${set.totalCutoff}"/>
+    </div>
+    <button class="btn btn-primary" id="saveSetBtn" style="margin-top:14px">Save Settings</button>
+  </div>
+  <div class="card">
+    <div class="section-title">Change Admin Password</div>
+    <div class="grid2">
+      <div><label class="label">New Password</label><input id="newPass" type="password" placeholder="New password"/></div>
+      <div><label class="label">Confirm Password</label><input id="confPass" type="password" placeholder="Confirm password"/></div>
+    </div>
+    <div id="passErr" class="error-msg" style="display:none"></div>
+    <button class="btn btn-primary" id="changePassBtn" style="margin-top:12px">Change Password</button>
+  </div>
+  <div class="card" style="border-color:#F7C1C1">
+    <div class="section-title" style="color:#A32D2D">Danger Zone</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-danger btn-sm" id="clearResultsBtn2">Clear All Results</button>
+      <button class="btn btn-danger btn-sm" id="clearAllDataBtn">Reset Everything</button>
+    </div>
+    <div style="font-size:12px;color:#6b6b68;margin-top:8px">Reset Everything deletes all students, questions and results.</div>
+  </div>`;}
+
+function exportCsv(){
+  const subList=Object.entries(DB.submissions);
+  if(!subList.length){alert('No results to export.');return;}
+  const sorted=[...subList].sort(([,a],[,b])=>b.total-a.total);
+  const headers=['Rank','Name','Reg No','Total Score','Total Questions','Percentage',...SECTIONS.map(s=>s+' Score'),...SECTIONS.map(s=>s+' Status'),'Date','Status'];
+  const rows=sorted.map(([r,s],i)=>[
+    i+1,s.name,r,s.total,s.totalQ,pct(s.total,s.totalQ)+'%',
+    ...SECTIONS.map(sec=>s.secResults?.[sec]?s.secResults[sec].score+'/'+s.secResults[sec].total:'0'),
+    ...SECTIONS.map(sec=>s.secResults?.[sec]?.pass?'Cleared':'Not Cleared'),
+    s.time,s.pass?'Qualified':'Not Qualified'
+  ]);
+  const csv=[headers,...rows].map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='aptitude_results_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+}
+
+function attachEvents(){
+  const $=id=>document.getElementById(id);
+  const on=(id,ev,fn)=>{const el=$(id);if(el)el.addEventListener(ev,fn)};
+
+  on('loginBtn','click',()=>{
+    const reg=($('regInput')?.value||'').trim().toUpperCase();
+    S.regInput=reg;
+    const err=$('regErr');
+    const totalQ=SECTIONS.reduce((a,s)=>a+(DB.questions[s]||[]).length,0);
+    if(!DB.students[reg]){if(err){err.textContent='Registration number not found.';err.style.display='block';}return;}
+    if(DB.submissions[reg]){if(err){err.textContent='You have already submitted this test.';err.style.display='block';}return;}
+    if(!totalQ){if(err){err.textContent='Test not ready yet. Please contact admin.';err.style.display='block';}return;}
+    S.student={reg,name:DB.students[reg]};
+    S.curSection=0;S.sectionDone=[false,false,false];
+    S.answers={Quantitative:{},Logical:{},Verbal:{}};
+    S.sectionScores=[null,null,null];
+    S.timers.forEach(t=>{if(t)clearInterval(t);});S.timers=[null,null,null];
+    S.view='test';startSection(0);
+  });
+  document.getElementById('regInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('loginBtn')?.click();});
+
+  on('adminBtn','click',()=>{S.view='admin';render();});
+  on('backHomeBtn','click',()=>{S.view='landing';render();});
+  on('adminLoginBtn','click',()=>{
+    const p=$('apass')?.value||'';S.adminPassInput=p;
+    if(p===S.adminPass){S.adminLoggedIn=true;render();}
+    else{const e=$('aErr');if(e)e.style.display='block';}
+  });
+  $('apass')?.addEventListener('keydown',e=>{if(e.key==='Enter')$('adminLoginBtn')?.click();});
+  on('adminLogoutBtn','click',()=>{S.adminLoggedIn=false;S.adminPassInput='';S.view='landing';render();});
+
+  document.querySelectorAll('.nav-tab').forEach(t=>{t.addEventListener('click',()=>{S.adminTab=t.dataset.tab;S.showAddQ=false;S.showAddS=false;render();});});
+  document.querySelectorAll('[data-asec]').forEach(t=>{t.addEventListener('click',()=>{S.adminSecTab=t.dataset.asec;S.showAddQ=false;S.editingQId=null;render();});});
+
+  on('addSToggle','click',()=>{S.showAddS=!S.showAddS;render();});
+  on('cancelSBtn','click',()=>{S.showAddS=false;S.bulk='';render();});
+  on('saveSBtn','click',()=>{
+    const r=($('newReg')?.value||'').trim().toUpperCase();
+    const n=($('newName')?.value||'').trim();
+    const bulk=$('bulkInput')?.value||'';S.bulk=bulk;
+    const st=DB.students;let added=0;
+    if(r&&n){st[r]=n;added++;}
+    bulk.split('\n').forEach(line=>{const p=line.split(',').map(x=>x.trim());if(p.length>=2&&p[0]&&p[1]){st[p[0].toUpperCase()]=p.slice(1).join(',').trim();added++;}});
+    if(added){DB.students=st;S.showAddS=false;S.bulk='';render();}else alert('Enter at least one student.');
+  });
+  document.querySelectorAll('[data-delreg]').forEach(b=>{b.addEventListener('click',()=>{if(!confirm('Remove student?'))return;const st=DB.students;delete st[b.dataset.delreg];DB.students=st;render();});});
+
+  on('addQToggle','click',()=>{S.showAddQ=!S.showAddQ;if(S.showAddQ){S.editingQId=null;S.newQ={type:S.adminSecTab,q:'',opts:['','','',''],ans:0};}render();});
+  on('cancelQBtn','click',()=>{S.showAddQ=false;S.editingQId=null;render();});
+  document.querySelectorAll('[data-editq]').forEach(b=>{b.addEventListener('click',()=>{
+    const sec=b.dataset.qsec,q=(DB.questions[sec]||[]).find(x=>x.id==b.dataset.editq);
+    if(!q)return;S.editingQId=q.id;S.newQ={type:sec,q:q.q,opts:[...q.opts],ans:q.ans};S.showAddQ=true;render();
+  });});
+  on('saveQBtn','click',()=>{
+    const qt=$('nqText')?.value.trim()||'';
+    const opts=[0,1,2,3].map(i=>$(`nqOpt${i}`)?.value.trim()||'');
+    const ans=parseInt(document.querySelector('input[name="nqAns"]:checked')?.value||'0');
+    if(!qt){alert('Please enter the question text.');return;}
+    if(opts.some(o=>!o)){alert('Please fill all 4 option fields.');return;}
+    const qs=DB.questions,sec=S.adminSecTab;
+    if(!qs[sec])qs[sec]=[];
+    if(S.editingQId){const idx=qs[sec].findIndex(q=>q.id===S.editingQId);if(idx>=0)qs[sec][idx]={...qs[sec][idx],q:qt,opts,ans};S.editingQId=null;}
+    else qs[sec].push({id:Date.now(),q:qt,opts,ans});
+    DB.questions=qs;S.showAddQ=false;render();
+  });
+  document.querySelectorAll('[data-delq]').forEach(b=>{b.addEventListener('click',()=>{if(!confirm('Remove this question?'))return;const sec=b.dataset.qsec,qs=DB.questions;qs[sec]=(qs[sec]||[]).filter(q=>q.id!=b.dataset.delq);DB.questions=qs;render();});});
+  document.querySelectorAll('input[name="nqAns"]').forEach(r=>{r.addEventListener('change',()=>{S.newQ.ans=parseInt(r.value);});});
+
+  document.querySelectorAll('.opt-row').forEach(o=>{o.addEventListener('click',()=>{
+    const qid=parseInt(o.dataset.qid),idx=parseInt(o.dataset.idx),sec=o.dataset.sec;
+    S.answers[sec][qid]=idx;
+    document.querySelectorAll(`.opt-row[data-qid="${qid}"]`).forEach(x=>x.classList.remove('selected'));
+    o.classList.add('selected');
+    const answered=Object.keys(S.answers[sec]).length;
+    const total=(DB.questions[sec]||[]).length;
+    const pf=document.querySelector('.progress-fill');
+    if(pf)pf.style.width=pct(answered,total)+'%';
+    const ac=document.querySelector('.wrap > div:first-child > span:first-child');
+    if(ac)ac.textContent=`${answered}/${total} answered`;
+  });});
+
+  on('finishSecBtn','click',()=>{
+    const idx=S.curSection,sec=SECTIONS[idx];
+    const answered=Object.keys(S.answers[sec]).length;
+    const total=(DB.questions[sec]||[]).length;
+    if(answered<total&&!confirm(`Only ${answered}/${total} answered in ${sec}. Finish section anyway?`))return;
+    finishSection(idx);
+  });
+
+  on('exportCsvBtn','click',exportCsv);
+  on('clearResultsBtn','click',()=>{if(confirm('Clear all results?')){DB.submissions={};render();}});
+  on('clearResultsBtn2','click',()=>{if(confirm('Clear all results?')){DB.submissions={};render();}});
+  on('clearAllDataBtn','click',()=>{if(confirm('Delete ALL data? This cannot be undone.')){DB.students={};DB.questions={Quantitative:[],Logical:[],Verbal:[]};DB.submissions={};render();}});
+
+  on('saveSetBtn','click',()=>{
+    const set=DB.settings;
+    SECTIONS.forEach(sec=>{
+      const d=parseInt(document.querySelector(`.sec-dur[data-sec="${sec}"]`)?.value)||10;
+      const c=parseInt(document.querySelector(`.sec-cut[data-sec="${sec}"]`)?.value)||5;
+      set.sections[sec]={duration:d*60,cutoff:c};
+    });
+    set.totalCutoff=parseInt($('totalCutoff')?.value)||15;
+    DB.settings=set;alert('Settings saved successfully!');render();
+  });
+  on('changePassBtn','click',()=>{
+    const np=$('newPass')?.value||'',cp=$('confPass')?.value||'',e=$('passErr');
+    if(!np){if(e){e.textContent='Enter a new password';e.style.display='block';}return;}
+    if(np!==cp){if(e){e.textContent='Passwords do not match';e.style.display='block';}return;}
+    S.adminPass=np;if(e)e.style.display='none';alert('Password changed successfully!');
+  });
+}
+
+render();
+</script>
+</body>
+</html>
